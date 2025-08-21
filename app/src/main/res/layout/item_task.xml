@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:gravity="center_horizontal"
+    android:padding="16dp">
+
+    <!-- Задание: крупный, жирный, чёрный текст по центру -->
+    <TextView
+        android:id="@+id/taskProblem"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="12 × 3 = ?"
+        android:textColor="#000000"
+        android:textStyle="bold"
+        android:textSize="26sp"
+        android:gravity="center"
+        android:layout_marginBottom="10dp"/>
+
+    <!-- Окошко для ответа: белый фон, красная рамка, скругление можно менять -->
+    <EditText
+        android:id="@+id/answerInput"
+        android:layout_width="240dp"
+        android:layout_height="44dp"
+        android:background="@drawable/answer_background_rect"
+        android:gravity="center"
+        android:inputType="numberSigned"
+        android:hint="Ваш ответ"
+        android:textColor="#000000"
+        android:textSize="18sp"
+        android:padding="6dp"/>
+
+    <Button
+        android:id="@+id/submitBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Ответить"
+        android:layout_marginTop="10dp"/>
+</LinearLayout>

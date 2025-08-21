@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:padding="16dp">
+
+    <!-- При желании поставь здесь любую финальную картинку -->
+    <ImageView
+        android:id="@+id/finalImage"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:src="@drawable/img_mal"
+        android:scaleType="centerInside"
+        android:contentDescription="@null"/>
+
+    <TextView
+        android:id="@+id/resultText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Баллы: 0 — Время: 00:00"
+        android:textSize="20sp"
+        android:layout_marginTop="8dp"
+        android:gravity="center"/>
+
+    <TextView
+        android:id="@+id/coeffText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Коэффициент: 0,000"
+        android:textSize="20sp"
+        android:layout_marginTop="4dp"
+        android:gravity="center"/>
+</LinearLayout>
