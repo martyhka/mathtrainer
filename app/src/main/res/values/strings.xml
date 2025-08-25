@@ -1,5 +1,4 @@
 <resources>
     <string name="app_name">mathtrainer</string>
     <string name="knowledge_coeff">Коэффициент знаний: %1$s</string>
-
 </resources>
