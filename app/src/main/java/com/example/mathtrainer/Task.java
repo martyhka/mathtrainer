@@ -5,9 +5,9 @@ import java.util.Random;
 
 public class Task {
     private int a, b;
-    private char op;          // Операции: '+', '-', '*'
+    private char op; // '+', '-', '*'
 
-    // Поле оставлено для обратной совместимости
+    // Для обратной совместимости со старым форматом
     private String text;
     private int answer;
 
@@ -39,40 +39,28 @@ public class Task {
 
     private static final Random RANDOM = new Random();
 
-    /**
-     * Генерация случайных задач разных типов:
-     *
-     * 0 — умножение (1х1, цифры от 2 до 9)
-     * 1 — умножение (2х1, двузначные числа на однозначные)
-     * 2 — сложение или вычитание двух чисел
-     */
+    // 0 — умножение 1×1 (2..9); 1 — умножение 2×1; 2 — сложение/вычитание
     public static Task generate(int type) {
         switch (type) {
-            case 0: { // Умножение типа 1х1
-                int a = 2 + RANDOM.nextInt(8); // диапазон 2-9
-                int b = 2 + RANDOM.nextInt(8); // диапазон 2-9
+            case 0: {
+                int a = 2 + RANDOM.nextInt(8); // 2..9
+                int b = 2 + RANDOM.nextInt(8); // 2..9
                 return new Task(a, b, '*');
             }
-            case 1: { // Умножение типа 2х1
-                int twoDigit = 10 + RANDOM.nextInt(90); // диапазон 10-99
-                int singleDigit = 2 + RANDOM.nextInt(8); // диапазон 2-9
-                return new Task(twoDigit, singleDigit, '*');
+            case 1: {
+                int twoDigit = 10 + RANDOM.nextInt(90); // 10..99
+                int single   = 2 + RANDOM.nextInt(8);   // 2..9
+                return new Task(twoDigit, single, '*');
             }
-            case 2: { // Сложность или вычитание
-                int bigNum = 10 + RANDOM.nextInt(90); // диапазон 10-99
-                int smallNum = 1 + RANDOM.nextInt(bigNum); // от 1 до меньшего значения
-                if (RANDOM.nextBoolean()) {
-                    return new Task(bigNum, smallNum, '+'); // сложение
-                } else {
-                    return new Task(bigNum, smallNum, '-'); // вычитание
-                }
+            case 2: {
+                int big   = 10 + RANDOM.nextInt(90);    // 10..99
+                int small = 1 + RANDOM.nextInt(big);    // 1..big
+                return new Task(big, small, RANDOM.nextBoolean() ? '+' : '-');
             }
             default:
-                return generate(RANDOM.nextInt(3)); // Случайный выбор
+                return generate(RANDOM.nextInt(3));
         }
     }
 
-    public static Task random() {
-        return generate(RANDOM.nextInt(3));
-    }
+    public static Task random() { return generate(RANDOM.nextInt(3)); }
 }
