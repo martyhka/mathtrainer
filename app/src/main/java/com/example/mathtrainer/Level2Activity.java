@@ -22,6 +22,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.Locale;
 
+
 /**
  * Второй уровень. ЛОГИКУ MainActivity НЕ ТРОГАЕМ.
  * Здесь — та же механика (таймеры/баллы), но ответы — десятичные (1 знак).
@@ -61,6 +62,10 @@ public class Level2Activity extends AppCompatActivity {
     // --- Счёт ---
     private double totalScore = 0.0;
 
+    private String mode;
+    private String nextCls; // имя класса следующего (для марафона)
+
+
     // --- Тикер ---
     private final Runnable tick = new Runnable() {
         @Override public void run() {
@@ -84,6 +89,11 @@ public class Level2Activity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         // Используем тот же layout, что и первый уровень (id должны совпадать)
         setContentView(R.layout.activity_main);
+
+        mode   = getIntent().getStringExtra(Flow.EXTRA_MODE);
+        nextCls = getIntent().getStringExtra(Flow.EXTRA_NEXT);
+        if (mode == null) mode = Flow.MODE_TRAINING;
+
 
         levelTimerView   = findViewById(R.id.levelTimerView);
         tvTotal          = findViewById(R.id.totalScoreView);
@@ -250,64 +260,31 @@ public class Level2Activity extends AppCompatActivity {
         long bestMs  = rec[0];
         long worstMs = rec[1];
 
-        LinearLayout root = new LinearLayout(this);
-        root.setOrientation(LinearLayout.VERTICAL);
-        root.setLayoutParams(new LinearLayout.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+        String title = "Поздравляем! Уровень 2 пройден 🎉";
+        String timeText  = "Время уровня: " + formatMsAsMMSS(levelDurationMs);
+        String scoreText = "Баллы: " + String.format(java.util.Locale.getDefault(), "%.3f", totalScore);
+        String bestTxt   = (bestMs  == Long.MAX_VALUE) ? "—" : formatMsAsMMSS(bestMs);
+        String worstTxt  = (worstMs == 0L)            ? "—" : formatMsAsMMSS(worstMs);
+        String recText   = "Рекорды: мин " + bestTxt + " / макс " + worstTxt;
 
-        VideoView vv = new VideoView(this);
-        LinearLayout.LayoutParams videoLp =
-                new LinearLayout.LayoutParams(
-                        ViewGroup.LayoutParams.MATCH_PARENT, 0, 1f);
-        vv.setLayoutParams(videoLp);
-        Uri uri = Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.mal);
-        vv.setVideoURI(uri);
+        Runnable onNext;
+        String btnText;
+        if (Flow.MODE_MARATHON.equals(mode)) {
+            // в марафоне отсюда идём на уровень 3
+            btnText = "Следующий уровень";
+            onNext = () -> {
+                android.content.Intent i = new android.content.Intent(this, Level3Activity.class);
+                i.putExtra(Flow.EXTRA_MODE, Flow.MODE_MARATHON);
+                i.putExtra(Flow.EXTRA_NEXT, (String) null); // у 3-го нет следующего
+                startActivity(i);
+                finish();
+            };
+        } else {
+            btnText = "В меню уровней";
+            onNext = () -> startActivity(new android.content.Intent(this, LevelSelectorActivity.class));
+        }
 
-        LinearLayout info = new LinearLayout(this);
-        info.setOrientation(LinearLayout.VERTICAL);
-        info.setPadding(32, 24, 32, 24);
-        info.setLayoutParams(new LinearLayout.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-
-        TextView congrats = new TextView(this);
-        congrats.setText("Поздравляем! Уровень 2 пройден 🎉");
-        congrats.setTextColor(Color.BLACK);
-        congrats.setTypeface(Typeface.DEFAULT_BOLD);
-        congrats.setTextSize(20f);
-
-        TextView timeTv = new TextView(this);
-        timeTv.setText("Время уровня: " + formatMsAsMMSS(levelDurationMs));
-        timeTv.setTextColor(Color.BLACK);
-        timeTv.setTextSize(16f);
-
-        TextView scoreTv = new TextView(this);
-        scoreTv.setText("Баллы: " + String.format(Locale.getDefault(), "%.3f", totalScore));
-        scoreTv.setTextColor(Color.BLACK);
-        scoreTv.setTextSize(16f);
-
-        String bestTxt  = (bestMs  == Long.MAX_VALUE) ? "—" : formatMsAsMMSS(bestMs);
-        String worstTxt = (worstMs == 0L)            ? "—" : formatMsAsMMSS(worstMs);
-        TextView lbTv = new TextView(this);
-        lbTv.setText("Рекорды: мин " + bestTxt + " / макс " + worstTxt);
-        lbTv.setTextColor(Color.BLACK);
-        lbTv.setTextSize(16f);
-
-        Button nextBtn = new Button(this);
-        nextBtn.setText("Ещё раз уровень 2");
-        nextBtn.setOnClickListener(v -> resetLevel());
-
-        info.addView(congrats);
-        info.addView(timeTv);
-        info.addView(scoreTv);
-        info.addView(lbTv);
-        info.addView(nextBtn);
-
-        root.addView(vv);
-        root.addView(info);
-
-        setContentView(root);
-
-        vv.setOnPreparedListener(mp -> vv.start());
+        FinishScreen.show(this, title, timeText, scoreText, recText, btnText, onNext);
     }
 
     private void resetLevel() {

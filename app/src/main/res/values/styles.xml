@@ -1,3 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <style name="CircleBase">
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">@android:color/black</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="Circle.Small" parent="CircleBase">
+        <item name="android:layout_width">64dp</item>
+        <item name="android:layout_height">64dp</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:background">@drawable/bg_circle_gray</item>
+    </style>
+
+    <style name="CircleBig.Blue" parent="CircleBase">
+        <item name="android:layout_width">112dp</item>
+        <item name="android:layout_height">112dp</item>
+        <item name="android:textSize">28sp</item>
+        <item name="android:background">@drawable/bg_circle_blue</item>
+    </style>
 </resources>

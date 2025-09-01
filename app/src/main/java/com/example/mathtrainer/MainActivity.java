@@ -54,6 +54,9 @@ public class MainActivity extends AppCompatActivity {
 
     // --- Счёт ---
     private double totalScore = 0.0;
+    private String mode;     // Flow.MODE_TRAINING / Flow.MODE_MARATHON
+    private String nextCls;  // имя класса следующего уровня (для марафона)
+
 
     // Тикер: обновляет таймер уровня + штрафной таймер/балл
     private final Runnable tick = new Runnable() {
@@ -82,6 +85,11 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        mode   = getIntent().getStringExtra(Flow.EXTRA_MODE);
+        nextCls = getIntent().getStringExtra(Flow.EXTRA_NEXT);
+        if (mode == null) mode = Flow.MODE_TRAINING;
+
 
         // findViewById для новой шапки
         levelTimerView   = findViewById(R.id.levelTimerView);
@@ -249,79 +257,42 @@ public class MainActivity extends AppCompatActivity {
         pauseTicker();
         hideKeyboard();
 
-        // время уровня + рекорды
         long levelDurationMs = System.currentTimeMillis() - levelStartMs;
         updateRecords(levelDurationMs);
         long[] rec = getRecords();
         long bestMs  = rec[0];
         long worstMs = rec[1];
 
-        // Вертикальный контейнер: видео сверху (вес 1), инфо + кнопка снизу
-        LinearLayout root = new LinearLayout(this);
-        root.setOrientation(LinearLayout.VERTICAL);
-        root.setLayoutParams(new LinearLayout.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+        String title = "Поздравляем! Уровень 1 пройден 🎉";
+        String timeText  = "Время уровня: " + formatMsAsMMSS(levelDurationMs);
+        String scoreText = "Баллы: " + String.format(java.util.Locale.getDefault(), "%.3f", totalScore);
+        String bestTxt   = (bestMs  == Long.MAX_VALUE) ? "—" : formatMsAsMMSS(bestMs);
+        String worstTxt  = (worstMs == 0L)            ? "—" : formatMsAsMMSS(worstMs);
+        String recText   = "Рекорды: мин " + bestTxt + " / макс " + worstTxt;
 
-        // Видео
-        VideoView vv = new VideoView(this);
-        LinearLayout.LayoutParams videoLp =
-                new LinearLayout.LayoutParams(
-                        ViewGroup.LayoutParams.MATCH_PARENT, 0, 1f);
-        vv.setLayoutParams(videoLp);
-        Uri uri = Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.mal);
-        vv.setVideoURI(uri);
+        // куда идти
+        Runnable onNext;
+        String btnText;
+        if (Flow.MODE_MARATHON.equals(mode) && nextCls != null) {
+            btnText = "Следующий уровень";
+            onNext = () -> {
+                try {
+                    Class<?> c = Class.forName(nextCls);
+                    android.content.Intent i = new android.content.Intent(this, c);
+                    i.putExtra(Flow.EXTRA_MODE, Flow.MODE_MARATHON);
+                    i.putExtra(Flow.EXTRA_NEXT, Level3Activity.class.getName()); // для уровня 1 следующий после 2 — 3
+                    startActivity(i);
+                    finish();
+                } catch (ClassNotFoundException ignored) {}
+            };
+        } else {
+            btnText = "В меню уровней";
+            onNext = () -> startActivity(new android.content.Intent(this, LevelSelectorActivity.class));
+        }
 
-        // Инфо-панель снизу
-        LinearLayout info = new LinearLayout(this);
-        info.setOrientation(LinearLayout.VERTICAL);
-        info.setPadding(32, 24, 32, 24);
-        info.setLayoutParams(new LinearLayout.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-
-        TextView congrats = new TextView(this);
-        congrats.setText("Поздравляем! Уровень пройден 🎉");
-        congrats.setTextColor(Color.BLACK);
-        congrats.setTypeface(Typeface.DEFAULT_BOLD);
-        congrats.setTextSize(20f);
-
-        TextView timeTv = new TextView(this);
-        timeTv.setText("Время уровня: " + formatMsAsMMSS(levelDurationMs));
-        timeTv.setTextColor(Color.BLACK);
-        timeTv.setTextSize(16f);
-
-        TextView scoreTv = new TextView(this);
-        scoreTv.setText("Баллы: " + String.format(Locale.getDefault(), "%.3f", totalScore));
-        scoreTv.setTextColor(Color.BLACK);
-        scoreTv.setTextSize(16f);
-
-        String bestTxt  = (bestMs  == Long.MAX_VALUE) ? "—" : formatMsAsMMSS(bestMs);
-        String worstTxt = (worstMs == 0L)            ? "—" : formatMsAsMMSS(worstMs);
-        TextView lbTv = new TextView(this);
-        lbTv.setText("Рекорды: мин " + bestTxt + " / макс " + worstTxt);
-        lbTv.setTextColor(Color.BLACK);
-        lbTv.setTextSize(16f);
-
-        // Кнопка "Следующий уровень" (перезапуск уровня пока)
-        Button nextBtn = new Button(this);
-        nextBtn.setText("Следующий уровень");
-        nextBtn.setOnClickListener(v -> resetLevel());
-
-        info.addView(congrats);
-        info.addView(timeTv);
-        info.addView(scoreTv);
-        info.addView(lbTv);
-        info.addView(nextBtn);
-
-        root.addView(vv);
-        root.addView(info);
-
-        setContentView(root);
-
-        vv.setOnPreparedListener(mp -> vv.start());
-        vv.setOnCompletionListener(mp -> {
-            // остаёмся на экране — можно нажать «Следующий уровень»
-        });
+        FinishScreen.show(this, title, timeText, scoreText, recText, btnText, onNext);
     }
+
 
     private void resetLevel() {
         // вернуть основной layout и View'хи

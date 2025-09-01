@@ -22,6 +22,8 @@
 
         <activity android:name="com.example.mathtrainer.MainActivity" />
         <activity android:name="com.example.mathtrainer.Level2Activity" />
+        <activity android:name="com.example.mathtrainer.Level3Activity"/>
+
     </application>
 
 </manifest>
