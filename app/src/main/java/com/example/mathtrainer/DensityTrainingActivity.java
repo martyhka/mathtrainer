@@ -162,12 +162,19 @@ public class DensityTrainingActivity
 
 
         addButton("2 уровень — Расчётные задачи", () -> {
-            showComingSoon(2);
+            selectedLevel = 2;
+            generateLevelTwoQuestions();
+            showQuestion();
         });
 
+
+
         addButton("3 уровень — Составные задачи", () -> {
-            showComingSoon(3);
+            selectedLevel = 3;
+            generateLevelThreeQuestions();
+            showQuestion();
         });
+
 
         addButton("4 уровень — Сложные задачи", () -> {
             showComingSoon(4);
@@ -185,6 +192,480 @@ public class DensityTrainingActivity
                                 "готовятся. Скоро они появятся!")
                 .setPositiveButton("Понятно", null)
                 .show();
+    }
+
+    private void generateLevelThreeQuestions() {
+
+        questions.clear();
+        answers.clear();
+        current = 0;
+        correct = 0;
+
+        double volume;
+        double mass;
+        double density;
+        String material;
+        String text;
+
+        // ЗАДАЧА 1. ПОЛЫЙ ПРЯМОУГОЛЬНЫЙ БРУСОК
+
+        int index = random.nextInt(5);
+        material = SUBSTANCES[index];
+        density = DENSITIES[index] / 1000.0;
+
+        int a = 16 + 2 * random.nextInt(8);
+        int b = 10 + 2 * random.nextInt(5);
+        int c = 8 + 2 * random.nextInt(4);
+        int wall = 1 + random.nextInt(2);
+
+        double outerVolume = a * b * c;
+        double innerVolume =
+                (a - 2 * wall)
+                        * (b - 2 * wall)
+                        * (c - 2 * wall);
+
+        mass = density * (outerVolume - innerVolume);
+
+        text = "Из " + material
+                + " изготовили полый прямоугольный "
+                + "брусок с закрытыми стенками.\n\n"
+                + "Его внешние размеры: "
+                + a + " × " + b + " × " + c
+                + " см.\n"
+                + "Толщина всех стенок: "
+                + wall + " см.\n\n"
+                + "Определите массу бруска "
+                + "в граммах.";
+
+        questions.add(new Question(text, "г", mass));
+
+
+        // ЗАДАЧА 2. МЕТАЛЛИЧЕСКАЯ ТРУБА
+
+        index = random.nextInt(5);
+        material = SUBSTANCES[index];
+        density = DENSITIES[index] / 1000.0;
+
+        int outerRadius = 3 + random.nextInt(4);
+        int innerRadius = 1 + random.nextInt(
+                outerRadius - 1);
+        int pipeLength = 20 + 5 * random.nextInt(9);
+
+        volume = 3.14
+                * (outerRadius * outerRadius
+                - innerRadius * innerRadius)
+                * pipeLength;
+
+        mass = density * volume;
+
+        text = "Однородная труба из "
+                + material
+                + " имеет длину " + pipeLength
+                + " см.\n\n"
+                + "Внешний радиус трубы "
+                + outerRadius + " см, "
+                + "внутренний — "
+                + innerRadius + " см.\n\n"
+                + "Определите массу трубы "
+                + "в граммах.\n"
+                + "Примите π = 3,14.";
+
+        questions.add(new Question(text, "г", mass));
+
+
+        // ЗАДАЧА 3. ДЕТАЛЬ ИЗ ДВУХ МАТЕРИАЛОВ
+
+        int aluminumVolume =
+                100 + 50 * random.nextInt(9);
+
+        int copperVolume =
+                50 + 25 * random.nextInt(9);
+
+        double aluminumMass =
+                DENSITIES[0] * aluminumVolume / 1000.0;
+
+        double copperMass =
+                DENSITIES[2] * copperVolume / 1000.0;
+
+        mass = (aluminumMass + copperMass) / 1000.0;
+
+        text = "Деталь состоит из двух "
+                + "сплошных частей: алюминиевой "
+                + "и медной.\n\n"
+                + "Объём алюминиевой части "
+                + aluminumVolume + " см³.\n"
+                + "Объём медной части "
+                + copperVolume + " см³.\n\n"
+                + "Определите общую массу "
+                + "детали в килограммах.";
+
+        questions.add(new Question(text, "кг", mass));
+
+
+        // ЗАДАЧА 4. СОСУД С ДВУМЯ ЖИДКОСТЯМИ
+
+        int waterLiters = 1 + random.nextInt(5);
+        int oilLiters = 1 + random.nextInt(4);
+
+        double vesselMass =
+                (5 + random.nextInt(11)) / 10.0;
+
+        double waterMass =
+                DENSITIES[5] * waterLiters / 1000.0;
+
+        double oilMass =
+                DENSITIES[7] * oilLiters / 1000.0;
+
+        mass = vesselMass + waterMass + oilMass;
+
+        text = "Масса пустого сосуда "
+                + format(vesselMass) + " кг.\n\n"
+                + "В него налили "
+                + waterLiters + " л воды и "
+                + oilLiters
+                + " л растительного масла.\n\n"
+                + "Определите общую массу "
+                + "сосуда с жидкостями "
+                + "в килограммах.";
+
+        questions.add(new Question(text, "кг", mass));
+
+
+        // ЗАДАЧА 5. ВЫТЕСНЕНИЕ ВОДЫ
+
+        index = random.nextInt(5);
+        density = DENSITIES[index] / 1000.0;
+
+        int initialWater = 100 + 50
+                * random.nextInt(5);
+
+        int displacedVolume = 25 + 25
+                * random.nextInt(8);
+
+        int finalWater =
+                initialWater + displacedVolume;
+
+        mass = density * displacedVolume;
+
+        text = "В мензурке находилось "
+                + initialWater + " мл воды.\n\n"
+                + "После полного погружения "
+                + "сплошной металлической детали "
+                + "показание мензурки стало "
+                + finalWater + " мл.\n\n"
+                + "Масса детали равна "
+                + format(mass) + " г.\n\n"
+                + "Определите плотность металла "
+                + "в г/см³.";
+
+        questions.add(new Question(
+                text, "г/см³", density));
+
+
+        // ЗАДАЧА 6. ОБЪЁМ ЖИДКОСТИ ПО ВЗВЕШИВАНИЮ
+
+        index = 5 + random.nextInt(3);
+        material = SUBSTANCES[index];
+
+        int liquidLiters = 1 + random.nextInt(6);
+
+        double emptyMass =
+                (4 + random.nextInt(12)) / 10.0;
+
+        double liquidMass =
+                DENSITIES[index] * liquidLiters / 1000.0;
+
+        double fullMass = emptyMass + liquidMass;
+
+        text = "Масса пустого сосуда "
+                + format(emptyMass) + " кг.\n\n"
+                + "После заполнения сосуда "
+                + material
+                + " его масса стала "
+                + format(fullMass) + " кг.\n\n"
+                + "Определите объём налитой "
+                + "жидкости в литрах.";
+
+        questions.add(new Question(
+                text, "л", liquidLiters));
+
+
+        // ЗАДАЧА 7. ОБРАБОТКА ЗАГОТОВКИ
+
+        index = random.nextInt(5);
+        material = SUBSTANCES[index];
+        density = DENSITIES[index] / 1000.0;
+
+        a = 15 + 5 * random.nextInt(5);
+        b = 8 + 2 * random.nextInt(5);
+        c = 6 + 2 * random.nextInt(4);
+
+        int cutA = 2 + random.nextInt(4);
+        int cutB = 2 + random.nextInt(3);
+        int cutC = 2 + random.nextInt(3);
+
+        double originalVolume = a * b * c;
+        double removedVolume = cutA * cutB * cutC;
+
+        mass = density
+                * (originalVolume - removedVolume);
+
+        text = "Из сплошной заготовки "
+                + "из " + material
+                + " размером "
+                + a + " × " + b + " × " + c
+                + " см удалили часть материала.\n\n"
+                + "Удалённая часть имела форму "
+                + "прямоугольного параллелепипеда "
+                + "размером "
+                + cutA + " × " + cutB + " × "
+                + cutC + " см.\n\n"
+                + "Определите массу оставшейся "
+                + "детали в граммах.";
+
+        questions.add(new Question(text, "г", mass));
+
+
+        // ЗАДАЧА 8. НЕИЗВЕСТНЫЙ РАЗМЕР ПОЛОСТИ
+
+        index = random.nextInt(5);
+        material = SUBSTANCES[index];
+        density = DENSITIES[index] / 1000.0;
+
+        a = 20 + 2 * random.nextInt(8);
+        b = 12 + 2 * random.nextInt(5);
+        c = 10 + 2 * random.nextInt(4);
+
+        int cavityA = a - 4;
+        int cavityB = b - 4;
+        int cavityHeight = 2 + random.nextInt(c - 4);
+
+        outerVolume = a * b * c;
+        innerVolume =
+                cavityA * cavityB * cavityHeight;
+
+        mass = density * (outerVolume - innerVolume);
+
+        text = "Внутри прямоугольного "
+                + "бруска из " + material
+                + " имеется закрытая полость "
+                + "в форме прямоугольного "
+                + "параллелепипеда.\n\n"
+                + "Внешние размеры бруска: "
+                + a + " × " + b + " × " + c
+                + " см.\n\n"
+                + "Длина полости " + cavityA
+                + " см, ширина " + cavityB
+                + " см.\n"
+                + "Масса бруска с полостью "
+                + format(mass) + " г.\n\n"
+                + "Определите высоту полости "
+                + "в сантиметрах.";
+
+        questions.add(new Question(
+                text, "см", cavityHeight));
+
+        Collections.shuffle(questions, random);
+    }
+
+    private void generateLevelTwoQuestions() {
+
+        questions.clear();
+        answers.clear();
+        current = 0;
+        correct = 0;
+
+        // Материалы и плотности берём из существующего справочника.
+        // Индексы 0–4 соответствуют твёрдым материалам.
+
+        int index;
+        double density;
+        double volume;
+        double mass;
+        String material;
+        String text;
+
+        // Задача 1. Прямоугольный брусок
+
+        index = random.nextInt(5);
+        density = DENSITIES[index] / 1000.0;
+        material = SUBSTANCES[index];
+
+        int length = 10 + random.nextInt(21);
+        int width = 3 + random.nextInt(8);
+        int height = 2 + random.nextInt(5);
+
+        volume = length * width * height;
+        mass = density * volume / 1000.0;
+
+        text = "Сплошной брусок из " + material
+                + " имеет длину " + length
+                + " см, ширину " + width
+                + " см и высоту " + height
+                + " см.\n\n"
+                + "Определите его массу в килограммах.";
+
+        questions.add(new Question(text, "кг", mass));
+
+
+        // Задача 2. Пластина
+
+        index = random.nextInt(5);
+        density = DENSITIES[index] / 1000.0;
+        material = SUBSTANCES[index];
+
+        length = 20 + 5 * random.nextInt(7);
+        width = 10 + 5 * random.nextInt(5);
+        int thickness = 2 + random.nextInt(5);
+
+        volume = length * width * thickness / 10.0;
+        mass = density * volume;
+
+        text = "Однородная пластина из " + material
+                + " имеет длину " + length
+                + " см, ширину " + width
+                + " см и толщину " + thickness
+                + " мм.\n\n"
+                + "Определите массу пластины в граммах.";
+
+        questions.add(new Question(text, "г", mass));
+
+
+        // Задача 3. Медная проволока
+
+        int wireLength = 5 + 5 * random.nextInt(6);
+        int area = 1 + random.nextInt(5);
+
+        volume = wireLength * area;
+        mass = DENSITIES[2] / 1000.0 * volume;
+
+        text = "Медная проволока имеет длину "
+                + wireLength + " м и площадь "
+                + "поперечного сечения " + area
+                + " мм².\n\n"
+                + "Определите её массу в граммах.";
+
+        questions.add(new Question(text, "г", mass));
+
+
+        // Задача 4. Цилиндр
+
+        index = random.nextInt(5);
+        density = DENSITIES[index] / 1000.0;
+        material = SUBSTANCES[index];
+
+        int radius = 2 + random.nextInt(4);
+        int cylinderHeight = 5 + random.nextInt(11);
+
+        volume = 3.14 * radius * radius * cylinderHeight;
+        mass = density * volume;
+
+        text = "Сплошной цилиндр из " + material
+                + " имеет радиус основания " + radius
+                + " см и высоту " + cylinderHeight
+                + " см.\n\n"
+                + "Определите его массу в граммах.\n"
+                + "Примите π = 3,14.";
+
+        questions.add(new Question(text, "г", mass));
+
+
+        // Задача 5. Несколько одинаковых брусков
+
+        index = random.nextInt(5);
+        density = DENSITIES[index] / 1000.0;
+        material = SUBSTANCES[index];
+
+        int quantity = 2 + random.nextInt(5);
+        length = 10 + 5 * random.nextInt(5);
+        width = 4 + random.nextInt(5);
+        height = 2 + random.nextInt(4);
+
+        volume = length * width * height;
+        mass = quantity * volume * density;
+
+        text = "Из " + material + " изготовили "
+                + quantity + " одинаковых сплошных брусков.\n\n"
+                + "Размеры каждого: "
+                + length + " × " + width + " × "
+                + height + " см.\n\n"
+                + "Определите общую массу в граммах.";
+
+        questions.add(new Question(text, "г", mass));
+
+
+        // Задача 6. Определение плотности
+
+        index = random.nextInt(5);
+        density = DENSITIES[index] / 1000.0;
+        material = SUBSTANCES[index];
+
+        length = 10 + 5 * random.nextInt(5);
+        width = 4 + random.nextInt(5);
+        height = 2 + random.nextInt(4);
+
+        volume = length * width * height;
+        mass = density * volume;
+
+        text = "Однородный образец из " + material
+                + " имеет размеры "
+                + length + " × " + width
+                + " × " + height + " см.\n\n"
+                + "Масса образца равна "
+                + format(mass) + " г.\n\n"
+                + "Определите его плотность в г/см³.";
+
+        questions.add(new Question(text, "г/см³", density));
+
+
+        // Задача 7. Жидкость и сосуд
+
+        index = 5 + random.nextInt(3);
+        material = SUBSTANCES[index];
+
+        int liters = 1 + random.nextInt(5);
+        double vesselMass = (2 + random.nextInt(5)) / 10.0;
+
+        double liquidMass =
+                DENSITIES[index] * liters / 1000.0;
+
+        double totalMass = vesselMass + liquidMass;
+
+        text = "В сосуд налили " + liters
+                + " л " + material + ".\n\n"
+                + "Масса пустого сосуда "
+                + format(vesselMass) + " кг, "
+                + "а масса сосуда с жидкостью "
+                + format(totalMass) + " кг.\n\n"
+                + "Определите массу жидкости в килограммах.";
+
+        questions.add(new Question(text, "кг", liquidMass));
+
+
+        // Задача 8. Неизвестная длина бруска
+
+        index = random.nextInt(5);
+        density = DENSITIES[index] / 1000.0;
+        material = SUBSTANCES[index];
+
+        length = 10 + 5 * random.nextInt(7);
+        width = 3 + random.nextInt(6);
+        height = 2 + random.nextInt(5);
+
+        volume = length * width * height;
+        mass = density * volume;
+
+        text = "Сплошной брусок из " + material
+                + " имеет массу "
+                + format(mass) + " г.\n\n"
+                + "Его ширина " + width
+                + " см, высота " + height
+                + " см.\n\n"
+                + "Определите длину бруска в сантиметрах.";
+
+        questions.add(new Question(text, "см", length));
+
+        Collections.shuffle(questions, random);
     }
 
 
@@ -410,6 +891,15 @@ public class DensityTrainingActivity
 
         addText(question.text, 21);
 
+        if (selectedLevel == 2) {
+            addText(
+                    "Округлите только окончательный ответ "
+                            + "до десятых.\n"
+                            + "Пример: 0,23 → 0,2",
+                    16);
+        }
+
+
         addText("Введите числовой ответ "
                 + "в " + question.unit + ":", 18);
 
@@ -503,13 +993,29 @@ public class DensityTrainingActivity
         answers.add(entered);
 
         // Допуск на округление ответа.
-        double tolerance = Math.max(
-                0.02, Math.abs(question.result) * 0.005);
 
-        if (Math.abs(value - question.result)
-                <= tolerance) {
-            correct++;
+        if (selectedLevel == 2) {
+
+            // Второй уровень: округляем только конечный ответ
+            double expected = Math.round(
+                    question.result * 10.0) / 10.0;
+
+            if (Math.abs(value - expected) < 0.000001) {
+                correct++;
+            }
+
+        } else {
+
+            // Первый уровень: сохраняем прежнюю проверку
+            double tolerance = Math.max(
+                    0.02, Math.abs(question.result) * 0.005);
+
+            if (Math.abs(value - question.result)
+                    <= tolerance) {
+                correct++;
+            }
         }
+
 
         current++;
 
@@ -575,7 +1081,11 @@ public class DensityTrainingActivity
                     + "\nВаш ответ: "
                     + answers.get(i) + " " + q.unit
                     + "\nПравильный ответ: "
-                    + format(q.result)
+
+                    + format(selectedLevel == 2
+                            ? Math.round(q.result * 10.0) / 10.0
+                            : q.result)
+
                     + " " + q.unit, 16);
         }
 
