@@ -11,12 +11,33 @@ public class LevelSelectorActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        if (!StudentData.isRegistered(this)) {
+            startActivity(new Intent(this, ResultsActivity.class));
+            finish();
+            return;
+        }
+
         setContentView(R.layout.activity_level_selector);
 
         Button btnLevel1 = findViewById(R.id.btnLevel1);
         Button btnLevel2 = findViewById(R.id.btnLevel2);
         Button btnLevel3 = findViewById(R.id.btnLevel3); // ← внутри onCreate
         Button btnMarathon = findViewById(R.id.btnMarathon);
+
+        Button btnResults = findViewById(R.id.btnResults);
+
+        btnResults.setOnClickListener(v ->
+                startActivity(new Intent(
+                        this, ResultsActivity.class)));
+
+        Button btnEquations = findViewById(R.id.btnEquations);
+
+        btnEquations.setOnClickListener(v ->
+                startActivity(new Intent(
+                        this, EquationTrainingActivity.class)));
+
+
 
         btnLevel1.setOnClickListener(v ->
                 startActivity(new Intent(this, MainActivity.class)));

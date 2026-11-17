@@ -1,37 +1,106 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:orientation="vertical"
     android:gravity="center"
     android:padding="24dp"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:background="@drawable/matemagia_bg">
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btnLevel1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Уровень 1 (целые)" />
+        android:text="Уровень 1 (целые)"
+        android:background="@drawable/button_green_gradient"
+        android:backgroundTint="@null"
+        android:textColor="#FFFFFF"
+        android:textStyle="bold"
+        android:textAllCaps="false"
+        android:elevation="10dp"
+        android:translationZ="2dp" />
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btnLevel2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
         android:text="Уровень 2 (десятичные)"
-        android:layout_marginTop="16dp"/>
+        android:background="@drawable/button_green_gradient"
+        android:backgroundTint="@null"
+        android:textColor="#FFFFFF"
+        android:textStyle="bold"
+        android:textAllCaps="false"
+        android:elevation="10dp"
+        android:translationZ="2dp"
+        android:outlineAmbientShadowColor="#2867D8"
+        android:outlineSpotShadowColor="#1976FF"/>
 
-    <Button
+
+
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btnLevel3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
         android:text="Уровень 3 (удали лишнее)"
-        android:layout_marginTop="16dp"/>
+        android:background="@drawable/button_green_gradient"
+        android:backgroundTint="@null"
+        android:textColor="#FFFFFF"
+        android:textStyle="bold"
+        android:textAllCaps="false"
+        android:elevation="10dp"
+        android:translationZ="2dp"
+        android:outlineAmbientShadowColor="#2867D8"
+        android:outlineSpotShadowColor="#1976FF"/>
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btnMarathon"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
         android:text="Марафон (Ур.1 → Ур.2 → Ур.3)"
-        android:layout_marginTop="16dp"/>
+        android:background="@drawable/button_green_gradient"
+        android:backgroundTint="@null"
+        android:textColor="#FFFFFF"
+        android:textStyle="bold"
+        android:textAllCaps="false"
+        android:elevation="10dp"
+        android:translationZ="2dp"
+        android:outlineAmbientShadowColor="#2867D8"
+        android:outlineSpotShadowColor="#1976FF"/>
 
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnResults"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Мои результаты"
+        android:background="@drawable/button_green_gradient"
+        android:backgroundTint="@null"
+        android:textColor="#FFFFFF"
+        android:textStyle="bold"
+        android:textAllCaps="false"
+        android:elevation="10dp"
+        android:translationZ="2dp"
+        android:outlineAmbientShadowColor="#2867D8"
+        android:outlineSpotShadowColor="#1976FF"/>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnEquations"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Линейные уравнения"
+        android:background="@drawable/button_green_gradient"
+        android:backgroundTint="@null"
+        android:textColor="#FFFFFF"
+        android:textStyle="bold"
+        android:textAllCaps="false"
+        android:elevation="10dp"
+        android:translationZ="2dp"
+        android:outlineAmbientShadowColor="#2867D8"
+        android:outlineSpotShadowColor="#1976FF"/>
 
 </LinearLayout>

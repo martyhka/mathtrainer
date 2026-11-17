@@ -7,7 +7,7 @@ android {
     compileSdk = 36
 
     defaultConfig {
-        applicationId = "com.example.mathtrainer"
+        applicationId = "com.example.mathtrainer.new"
         minSdk = 24
         targetSdk = 36
         versionCode = 1

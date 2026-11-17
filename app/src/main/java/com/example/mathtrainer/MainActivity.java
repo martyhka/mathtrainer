@@ -167,6 +167,9 @@ public class MainActivity extends AppCompatActivity {
         catch (NumberFormatException e) { etAnswer.setError("Только число"); return; }
 
         if (currentTask != null && user == currentTask.getAnswer()) {
+
+            StudentData.addCorrect(this);
+
             long sec = (System.currentTimeMillis() - questionStartMs) / 1000L;
 
             // штрафной балл убывает от 1.000 до 0.000 в течение штрафной минуты
@@ -183,9 +186,12 @@ public class MainActivity extends AppCompatActivity {
                 return;
             }
             showNextTask();
+
         } else {
+            StudentData.addWrong(this);
             etAnswer.setError("Неверно");
         }
+
     }
 
     // ---------- Вспомогательные ----------
@@ -255,6 +261,9 @@ public class MainActivity extends AppCompatActivity {
 
     private void showWinScreen() {
         pauseTicker();
+
+        StudentData.addCompleted(this);
+
         hideKeyboard();
 
         long levelDurationMs = System.currentTimeMillis() - levelStartMs;
