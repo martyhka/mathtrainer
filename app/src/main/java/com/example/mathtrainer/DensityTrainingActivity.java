@@ -177,8 +177,11 @@ public class DensityTrainingActivity
 
 
         addButton("4 уровень — Сложные задачи", () -> {
-            showComingSoon(4);
+            selectedLevel = 4;
+            generateLevelFourQuestions();
+            showQuestion();
         });
+
 
         addButton("Назад к теме", this::finish);
     }
@@ -192,6 +195,279 @@ public class DensityTrainingActivity
                                 "готовятся. Скоро они появятся!")
                 .setPositiveButton("Понятно", null)
                 .show();
+    }
+
+    private void generateLevelFourQuestions() {
+
+        questions.clear();
+        answers.clear();
+        current = 0;
+        correct = 0;
+
+        int index;
+        double density;
+        double volume;
+        double mass;
+        String material;
+        String text;
+
+        // ЗАДАЧА 1. ПОЛЫЙ МЕТАЛЛИЧЕСКИЙ БЛОК
+
+        index = random.nextInt(5);
+        material = SUBSTANCES[index];
+        density = DENSITIES[index];
+
+        int a = 20 + 2 * random.nextInt(6);
+        int b = 14 + 2 * random.nextInt(5);
+        int c = 10 + 2 * random.nextInt(5);
+        int wall = 1 + random.nextInt(2);
+
+        double outer = a * b * c;
+        double inner = (a - 2 * wall)
+                * (b - 2 * wall)
+                * (c - 2 * wall);
+
+        mass = density * (outer - inner) / 1000000.0;
+
+        text = "Из " + material
+                + " изготовили полую деталь "
+                + "в форме прямоугольного "
+                + "параллелепипеда.\n\n"
+                + "Внешние размеры: "
+                + a + " × " + b + " × " + c
+                + " см.\n"
+                + "Толщина всех стенок: "
+                + wall + " см.\n\n"
+                + "Полость полностью закрыта.\n\n"
+                + "Определите массу детали "
+                + "в килограммах.";
+
+        questions.add(new Question(text, "кг", mass));
+
+
+        // ЗАДАЧА 2. МАССА МЕТАЛЛИЧЕСКОЙ ТРУБЫ
+
+        index = random.nextInt(5);
+        material = SUBSTANCES[index];
+        density = DENSITIES[index] / 1000.0;
+
+        int radiusOuter = 4 + random.nextInt(4);
+        int radiusInner = 1 + random.nextInt(3);
+        int length = 20 + 10 * random.nextInt(5);
+
+        volume = 3.14
+                * (radiusOuter * radiusOuter
+                - radiusInner * radiusInner)
+                * length;
+
+        mass = volume * density;
+
+        text = "Из " + material
+                + " изготовили трубу длиной "
+                + length + " см.\n\n"
+                + "Внешний радиус трубы "
+                + radiusOuter + " см, "
+                + "внутренний радиус "
+                + radiusInner + " см.\n\n"
+                + "Определите массу трубы "
+                + "в граммах.\n"
+                + "Примите π = 3,14.";
+
+        questions.add(new Question(text, "г", mass));
+
+
+        // ЗАДАЧА 3. СРЕДНЯЯ ПЛОТНОСТЬ ДЕТАЛИ
+
+        int aluminumV =
+                100 + 50 * random.nextInt(7);
+
+        int copperV =
+                50 + 25 * random.nextInt(9);
+
+        double aluminumM =
+                DENSITIES[0] * aluminumV / 1000.0;
+
+        double copperM =
+                DENSITIES[2] * copperV / 1000.0;
+
+        double totalV = aluminumV + copperV;
+        double totalM = aluminumM + copperM;
+
+        density = totalM / totalV;
+
+        text = "Составная деталь состоит "
+                + "из двух сплошных частей.\n\n"
+                + "Объём алюминиевой части: "
+                + aluminumV + " см³.\n"
+                + "Объём медной части: "
+                + copperV + " см³.\n\n"
+                + "Между частями нет пустот.\n\n"
+                + "Определите среднюю плотность "
+                + "детали в г/см³.";
+
+        questions.add(new Question(
+                text, "г/см³", density));
+
+
+        // ЗАДАЧА 4. ЗАМЕНА МАТЕРИАЛА
+
+        int bodyVolume =
+                200 + 100 * random.nextInt(9);
+
+        double massAl =
+                DENSITIES[0] * bodyVolume / 1000000.0;
+
+        double massCu =
+                DENSITIES[2] * bodyVolume / 1000000.0;
+
+        double difference = massCu - massAl;
+
+        text = "Сплошную алюминиевую деталь "
+                + "объёмом " + bodyVolume
+                + " см³ заменили медной деталью "
+                + "такой же формы и объёма.\n\n"
+                + "На сколько килограммов "
+                + "увеличилась масса детали?";
+
+        questions.add(new Question(
+                text, "кг", difference));
+
+
+        // ЗАДАЧА 5. ДВЕ ЖИДКОСТИ В СОСУДЕ
+
+        int waterL = 1 + random.nextInt(5);
+        int oilL = 1 + random.nextInt(5);
+
+        double waterM =
+                DENSITIES[5] * waterL / 1000.0;
+
+        double oilM =
+                DENSITIES[7] * oilL / 1000.0;
+
+        density = (waterM + oilM)
+                / (waterL + oilL);
+
+        text = "В сосуд налили "
+                + waterL + " л воды и "
+                + oilL + " л растительного масла.\n\n"
+                + "Жидкости образуют два слоя, "
+                + "их объёмы складываются.\n\n"
+                + "Определите среднюю плотность "
+                + "содержимого сосуда "
+                + "в г/см³.\n"
+                + "Массой сосуда пренебречь.";
+
+        questions.add(new Question(
+                text, "г/см³", density));
+
+
+        // ЗАДАЧА 6. ТЕЛО В СОСУДЕ С ЖИДКОСТЬЮ
+
+        int capacity = 2 + random.nextInt(5);
+
+        int blockA = 5 + random.nextInt(6);
+        int blockB = 4 + random.nextInt(5);
+        int blockC = 3 + random.nextInt(5);
+
+        double blockVolume =
+                blockA * blockB * blockC;
+
+        double liquidVolume =
+                capacity * 1000.0 - blockVolume;
+
+        mass = DENSITIES[5]
+                * liquidVolume / 1000000.0;
+
+        text = "В сосуд вместимостью "
+                + capacity + " л поместили "
+                + "сплошной металлический брусок "
+                + "размером "
+                + blockA + " × " + blockB
+                + " × " + blockC + " см.\n\n"
+                + "Брусок полностью погружён "
+                + "в воду. После этого сосуд "
+                + "заполнили водой до краёв.\n\n"
+                + "Определите массу воды "
+                + "в сосуде в килограммах.";
+
+        questions.add(new Question(text, "кг", mass));
+
+
+        // ЗАДАЧА 7. ПЛАСТИНА С ВЫРЕЗОМ
+
+        index = random.nextInt(5);
+        material = SUBSTANCES[index];
+        density = DENSITIES[index] / 1000.0;
+
+        int plateA = 20 + 5 * random.nextInt(6);
+        int plateB = 15 + 5 * random.nextInt(5);
+        int thickness = 2 + random.nextInt(5);
+
+        int holeA = 5 + random.nextInt(6);
+        int holeB = 4 + random.nextInt(5);
+
+        double fullVolume =
+                plateA * plateB * thickness / 10.0;
+
+        double holeVolume =
+                holeA * holeB * thickness / 10.0;
+
+        mass = density * (fullVolume - holeVolume);
+
+        text = "Из " + material
+                + " изготовили прямоугольную "
+                + "пластину размером "
+                + plateA + " × " + plateB
+                + " см и толщиной "
+                + thickness + " мм.\n\n"
+                + "В пластине вырезали сквозное "
+                + "прямоугольное отверстие "
+                + "размером " + holeA + " × "
+                + holeB + " см.\n\n"
+                + "Определите массу оставшейся "
+                + "пластины в граммах.";
+
+        questions.add(new Question(text, "г", mass));
+
+
+        // ЗАДАЧА 8. СРАВНЕНИЕ ОБЪЁМОВ
+
+        int first = random.nextInt(5);
+        int second = random.nextInt(5);
+
+        while (second == first) {
+            second = random.nextInt(5);
+        }
+
+        int commonMass = 1 + random.nextInt(5);
+
+        double volumeFirst =
+                commonMass / DENSITIES[first];
+
+        double volumeSecond =
+                commonMass / DENSITIES[second];
+
+        double ratio = volumeFirst / volumeSecond;
+
+        text = "Два сплошных однородных тела "
+                + "изготовлены из разных материалов.\n\n"
+                + "Первое тело — из "
+                + SUBSTANCES[first] + ".\n"
+                + "Второе тело — из "
+                + SUBSTANCES[second] + ".\n\n"
+                + "Масса каждого тела "
+                + commonMass + " кг.\n\n"
+                + "Во сколько раз объём первого "
+                + "тела отличается от объёма "
+                + "второго?\n\n"
+                + "Ответ запишите как отношение "
+                + "объёма первого тела к объёму "
+                + "второго.";
+
+        questions.add(new Question(
+                text, "раз", ratio));
+
+        Collections.shuffle(questions, random);
     }
 
     private void generateLevelThreeQuestions() {
@@ -1089,10 +1365,20 @@ public class DensityTrainingActivity
                     + " " + q.unit, 16);
         }
 
+
         addButton("Новая тренировка", () -> {
-            generateQuestions();
+            if (selectedLevel == 4) {
+                generateLevelFourQuestions();
+            } else if (selectedLevel == 3) {
+                generateLevelThreeQuestions();
+            } else if (selectedLevel == 2) {
+                generateLevelTwoQuestions();
+            } else {
+                generateQuestions();
+            }
             showQuestion();
         });
+
 
         addButton("Выбрать другой уровень",
                 this::showLevelMenu);

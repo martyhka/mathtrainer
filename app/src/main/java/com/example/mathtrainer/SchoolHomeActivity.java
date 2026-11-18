@@ -177,17 +177,79 @@ public class SchoolHomeActivity extends AppCompatActivity {
         addTitle(topic);
         addText(subject + " · " + grade + " класс");
 
-        addButton("Изучить теорию",
-                () -> showTopicMode(grade, subject,
-                        topic, "Теория"));
 
-        addButton("Потренироваться",
-                () -> showTopicMode(grade, subject,
-                        topic, "Тренировка"));
+        if (grade == 7
+                && subject.equals("Физика")
 
-        addButton("Пройти тест",
-                () -> showTopicMode(grade, subject,
-                        topic, "Тест"));
+                && topic.toLowerCase().contains("механическое движение")) {
+
+
+            addButton("Изучить теорию", () ->
+                    startActivity(new Intent(
+                            this, MotionTheoryActivity.class)));
+
+        } else {
+
+            addButton("Изучить теорию",
+                    () -> showTopicMode(
+                            grade, subject, topic, "Теория"));
+        }
+
+
+        if (grade == 7
+                && subject.equals("Физика")
+                && topic.toLowerCase().contains("механическое движение")) {
+
+            addButton("Потренироваться", () ->
+                    startActivity(new Intent(
+                            this, MotionTrainingActivity.class)));
+
+        } else {
+
+            addButton("Потренироваться",
+                    () -> showTopicMode(
+                            grade, subject, topic, "Тренировка"));
+        }
+
+
+        if (grade == 7
+                && subject.equals("Физика")
+                && topic.toLowerCase().contains("механическое движение")) {
+
+            addButton("Пройти тест", () ->
+                    startActivity(new Intent(
+                            this, MotionTestActivity.class)));
+
+        } else {
+
+            addButton("Пройти тест",
+                    () -> showTopicMode(
+                            grade, subject, topic, "Тест"));
+        }
+
+
+        if (grade == 7
+                && subject.equals("Физика")
+                && topic.equals("Масса и плотность")) {
+
+            addButton("Самостоятельная работа", () -> {
+                startActivity(new Intent(
+                        this, DensityControlActivity.class));
+            });
+        }
+
+        if (grade == 7
+                && subject.equals("Физика")
+                && topic.toLowerCase().contains("механическое движение")) {
+
+            addButton("Самостоятельная работа", () -> {
+                startActivity(new Intent(
+                        this, MotionControlActivity.class));
+            });
+        }
+
+
+
 
         addButton("Назад к оглавлению",
                 () -> showSection(grade, subject));

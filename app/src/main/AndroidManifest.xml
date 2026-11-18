@@ -45,6 +45,29 @@
             android:name=".DensityTrainingActivity"
             android:exported="false" />
 
+        <activity
+            android:name=".DensityControlActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".MotionTheoryActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".MotionTrainingActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".MotionTestActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".MotionControlActivity"
+            android:exported="false" />
+
+
+
+
 
     </application>
 
