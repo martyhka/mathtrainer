@@ -23,6 +23,7 @@ public class MotionControlActivity extends AppCompatActivity {
 
     private LinearLayout page;
     private EditText nameInput;
+    private EditText numberInput;
     private EditText classInput;
     private EditText answerInput;
 
@@ -37,6 +38,9 @@ public class MotionControlActivity extends AppCompatActivity {
     private boolean profile = false;
 
     private String studentName = "";
+
+    private String studentNumber = "";
+
     private String studentClass = "";
 
     private static class Question {
@@ -150,8 +154,13 @@ public class MotionControlActivity extends AppCompatActivity {
         addText("Механическое движение", 26);
         addText("Самостоятельная работа", 24);
 
-        nameInput = addInput("Фамилия и имя", false);
+
+        nameInput = addInput("Имя ученика", false);
+
+        numberInput = addInput("Личный код ученика", false);
+
         classInput = addInput("Класс, например 7А", false);
+
 
         addText("Выберите уровень обучения:", 20);
 
@@ -170,15 +179,30 @@ public class MotionControlActivity extends AppCompatActivity {
         studentClass = classInput.getText()
                 .toString().trim();
 
+        studentNumber = numberInput.getText()
+                .toString().trim();
+
+
+        nameInput.setError("Укажите имя ученика");
+
+
         if (studentName.isEmpty()) {
-            nameInput.setError("Укажите фамилию и имя");
+            nameInput.setError("Укажите имя ученика");
             return;
         }
+
+        if (studentNumber.isEmpty()
+                || !studentNumber.matches("[a-zA-Zа-яА-ЯёЁ0-9-]{3,12}")) {
+            numberInput.setError("Введите личный код от 3 до 12 символов");
+            return;
+        }
+
 
         if (studentClass.isEmpty()) {
             classInput.setError("Укажите класс");
             return;
         }
+
 
         profile = isProfile;
         generateControl();
@@ -460,6 +484,9 @@ public class MotionControlActivity extends AppCompatActivity {
 
         addText("Работа завершена!", 28);
         addText(studentName, 21);
+
+        addText("Личный код: " + studentNumber, 19);
+
         addText(studentClass, 19);
 
         addText(profile

@@ -26,6 +26,7 @@ public class DensityControlActivity
     private LinearLayout page;
     private EditText answerInput;
     private EditText nameInput;
+    private EditText numberInput;
     private EditText classInput;
 
     private final Random random = new Random();
@@ -39,6 +40,9 @@ public class DensityControlActivity
     private boolean profile = false;
 
     private String studentName = "";
+
+    private String studentNumber = "";
+
     private String studentClass = "";
 
     // Значения согласованы со справочником тренажёра.
@@ -189,10 +193,12 @@ public class DensityControlActivity
         addText("Самостоятельная работа", 28);
         addText("Масса и плотность", 23);
 
-        nameInput = addInput(
-                "Фамилия и имя", false);
-        classInput = addInput(
-                "Класс, например 7А", false);
+
+        nameInput = addInput("Имя ученика", false);
+        numberInput = addInput("Личный код ученика", false);
+        classInput = addInput("Класс, например 7А", false);
+
+
 
         addText("Выберите уровень обучения:", 20);
 
@@ -212,6 +218,17 @@ public class DensityControlActivity
 
         studentClass = classInput.getText()
                 .toString().trim();
+
+        studentNumber = numberInput.getText()
+                .toString().trim();
+
+        if (studentNumber.isEmpty()
+                || !studentNumber.matches("[a-zA-Zа-яА-ЯёЁ0-9-]{3,12}")) {
+            numberInput.setError("Введите личный код от 3 до 12 символов");
+            return;
+        }
+
+
 
         if (studentName.isEmpty()) {
             nameInput.setError("Укажите имя");
@@ -496,6 +513,7 @@ public class DensityControlActivity
 
         addText("Работа завершена!", 28);
         addText(studentName, 21);
+        addText("Личный код: " + studentNumber, 19);
         addText(studentClass, 19);
 
         addText(profile
