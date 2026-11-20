@@ -285,9 +285,152 @@ public class MotionTestActivity extends AppCompatActivity {
     }
 
 
+
     private void generateStandardQuestions() {
-        // 12 заданий обычного теста
+        questions.clear();
+        answers.clear();
+        current = 0;
+
+        // 1. Скорость
+        int v = 2 + random.nextInt(8);
+        int t = 20 + 10 * random.nextInt(8);
+
+        questions.add(new Question(
+                "Тело прошло " + (v * t) + " м за "
+                        + t + " с. Определите скорость.",
+                "м/с", v));
+
+        // 2. Путь
+        v = 3 + random.nextInt(10);
+        t = 30 + 10 * random.nextInt(8);
+
+        questions.add(new Question(
+                "Велосипедист двигался со скоростью "
+                        + v + " м/с в течение " + t
+                        + " с. Найдите пройденный путь.",
+                "м", v * t));
+
+        // 3. Время
+        v = 2 + random.nextInt(8);
+        t = 40 + 20 * random.nextInt(6);
+
+        questions.add(new Question(
+                "Пешеход прошёл " + (v * t)
+                        + " м со скоростью " + v
+                        + " м/с. Найдите время движения.",
+                "с", t));
+
+        // 4. Перевод км/ч в м/с
+        v = 18 * (2 + random.nextInt(6));
+
+        questions.add(new Question(
+                "Переведите " + v + " км/ч в м/с.",
+                "м/с", v * 10.0 / 36.0));
+
+        // 5. Перевод м/с в км/ч
+        v = 5 * (1 + random.nextInt(7));
+
+        questions.add(new Question(
+                "Переведите " + v + " м/с в км/ч.",
+                "км/ч", v * 36.0 / 10.0));
+
+        // 6. Скорость автомобиля
+        v = 40 + 10 * random.nextInt(6);
+        t = 2 + random.nextInt(5);
+
+        questions.add(new Question(
+                "Автомобиль проехал " + (v * t)
+                        + " км за " + t
+                        + " ч. Определите его скорость.",
+                "км/ч", v));
+
+        // 7. Два участка с одинаковой скоростью
+        v = 30 + 10 * random.nextInt(6);
+        int t1 = 1 + random.nextInt(4);
+        int t2 = 1 + random.nextInt(4);
+
+        questions.add(new Question(
+                "Автомобиль ехал со скоростью "
+                        + v + " км/ч сначала " + t1
+                        + " ч, затем ещё " + t2
+                        + " ч. Найдите общий путь.",
+                "км", v * (t1 + t2)));
+
+        // 8. Два участка с разными скоростями
+        int v1 = 30 + 10 * random.nextInt(5);
+        int v2 = 40 + 10 * random.nextInt(5);
+        t1 = 1 + random.nextInt(4);
+        t2 = 1 + random.nextInt(4);
+
+        questions.add(new Question(
+                "Автобус ехал " + t1
+                        + " ч со скоростью " + v1
+                        + " км/ч, затем " + t2
+                        + " ч со скоростью " + v2
+                        + " км/ч. Найдите общий путь.",
+                "км", v1 * t1 + v2 * t2));
+
+        // 9. Средняя скорость
+        v1 = 30 + 10 * random.nextInt(5);
+        v2 = 40 + 10 * random.nextInt(5);
+        t1 = 1 + random.nextInt(4);
+        t2 = 1 + random.nextInt(4);
+
+        questions.add(new Question(
+                "Автомобиль ехал " + t1
+                        + " ч со скоростью " + v1
+                        + " км/ч и " + t2
+                        + " ч со скоростью " + v2
+                        + " км/ч. Определите среднюю скорость.",
+                "км/ч",
+                (double) (v1 * t1 + v2 * t2)
+                        / (t1 + t2)));
+
+        // 10. Средняя скорость с остановкой
+        v = 40 + 10 * random.nextInt(5);
+        t = 2 + random.nextInt(4);
+        int stop = 10 * (1 + random.nextInt(5));
+
+        questions.add(new Question(
+                "Автобус проехал " + (v * t)
+                        + " км за " + t
+                        + " ч движения и остановился на "
+                        + stop + " мин. Найдите среднюю "
+                        + "скорость за всю поездку.",
+                "км/ч",
+                (double) (v * t) / (t + stop / 60.0)));
+
+        // 11. Встречное движение
+        v1 = 30 + 10 * random.nextInt(5);
+        v2 = 40 + 10 * random.nextInt(5);
+        t = 2 + random.nextInt(4);
+
+        questions.add(new Question(
+                "Два автомобиля одновременно "
+                        + "выехали навстречу друг другу "
+                        + "со скоростями " + v1
+                        + " км/ч и " + v2
+                        + " км/ч. Они встретились через "
+                        + t + " ч. Найдите первоначальное "
+                        + "расстояние между ними.",
+                "км", (v1 + v2) * t));
+
+        // 12. Поезд проходит мимо столба
+        int length = 100 + 50 * random.nextInt(6);
+        v = 36 + 18 * random.nextInt(5);
+
+        questions.add(new Question(
+                "Поезд длиной " + length
+                        + " м движется со скоростью "
+                        + v + " км/ч. За сколько секунд "
+                        + "он полностью пройдёт "
+                        + "мимо неподвижного столба?",
+                "с", length / (v * 10.0 / 36.0)));
+
+        Collections.shuffle(questions, random);
     }
+
+
 
     private void showQuestion() {
         // Экран задания
@@ -300,6 +443,11 @@ public class MotionTestActivity extends AppCompatActivity {
         addText("Задание " + (current + 1)
                 + " из " + questions.size(), 19);
         addText(q.text, 22);
+
+        addButton("📖 Справочные материалы", () -> {
+            PhysicsReferenceDialog.show(this);
+        });
+
         addText("Ответ в " + q.unit + ":", 18);
 
         answerInput = new EditText(this);

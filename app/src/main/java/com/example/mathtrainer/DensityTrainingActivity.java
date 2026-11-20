@@ -1167,6 +1167,11 @@ public class DensityTrainingActivity
 
         addText(question.text, 21);
 
+        addButton("📖 Справочные материалы", () -> {
+            PhysicsReferenceDialog.show(this);
+        });
+
+
         if (selectedLevel == 2) {
             addText(
                     "Округлите только окончательный ответ "

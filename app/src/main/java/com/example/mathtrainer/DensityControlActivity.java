@@ -419,6 +419,11 @@ public class DensityControlActivity
 
         addText(question.text, 21);
 
+        addButton("📖 Справочные материалы", () -> {
+            PhysicsReferenceDialog.show(this);
+        });
+
+
         addText("Округлите только окончательный "
                 + "ответ до десятых.\n"
                 + "Пример: 0,23 → 0,2", 16);

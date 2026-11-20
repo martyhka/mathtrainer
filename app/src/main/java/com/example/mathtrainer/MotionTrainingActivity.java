@@ -866,6 +866,11 @@ public class MotionTrainingActivity extends AppCompatActivity {
 
         addText(question.text, 22);
 
+        addButton("📖 Справочные материалы", () -> {
+            PhysicsReferenceDialog.show(this);
+        });
+
+
         addText("Ответ в " + question.unit + ":", 18);
 
         answerInput = addAnswerField();
@@ -918,13 +923,17 @@ public class MotionTrainingActivity extends AppCompatActivity {
         int correct = 0;
 
         for (int i = 0; i < questions.size(); i++) {
-            double expected =
-                    roundAnswer(questions.get(i).answer);
 
-            if (Math.abs(studentAnswers.get(i) - expected)
-                    < 0.000001) {
+            boolean answerIsCorrect =
+                    PhysicsAnswerUtils.isCorrect(
+                            String.valueOf(studentAnswers.get(i)),
+                            questions.get(i).answer
+                    );
+
+            if (answerIsCorrect) {
                 correct++;
             }
+
         }
 
         addText("Тренировка завершена!", 27);
@@ -934,11 +943,16 @@ public class MotionTrainingActivity extends AppCompatActivity {
         for (int i = 0; i < questions.size(); i++) {
             Question question = questions.get(i);
 
+
             double expected = roundAnswer(question.answer);
             double given = studentAnswers.get(i);
 
             boolean correctAnswer =
-                    Math.abs(given - expected) < 0.000001;
+                    PhysicsAnswerUtils.isCorrect(
+                            String.valueOf(given),
+                            question.answer
+                    );
+
 
             addText("Задание " + (i + 1) + "\n"
                             + (correctAnswer ? "✓ Верно" : "✗ Ошибка")
